@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h1>Name & Address Validator</h1>
+
+<!-- 🔍 Search Box (Always Visible on Top) -->
+<input type="text" id="searchBox" placeholder="Search name or address...">
+
+<!-- ➕ Add Entry Form (Always Visible under Search) -->
+<form method="POST">
+    <input type="text" name="name" placeholder="Enter Name" required>
+    <input type="text" name="address" placeholder="Enter Address" required>
+    <button type="submit">Add</button>
+</form>
+
+<!-- 📋 Table (Only this updates during search) -->
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Added</th>
+        <th>Actions</th>
+    </tr>
+    <tbody id="tableBody">
+        {% for person in people %}
+        <tr>
+            <td>{{ person.name }}</td>
+            <td>{{ person.address }}</td>
+            <td>{{ person.date_added.date() }}</td>
+            <td>
+                <a href="/delete/{{person.id}}"><button>Delete</button></a>
+                <a href="/update/{{person.id}}"><button>Update</button></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- ⚡ Live Search Script -->
+<script>
+const searchBox = document.getElementById("searchBox");
+const tableBody = document.getElementById("tableBody");
+
+searchBox.addEventListener("keyup", function() {
+    const query = searchBox.value;
+
+    fetch(`/search?query=${query}`)
+        .then(response => response.text())
+        .then(data => {
+            tableBody.innerHTML = data;
+        });
+});
+</script>
+
+{% endblock %}
