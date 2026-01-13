@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
+# Database Model inside app.py
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -23,8 +23,8 @@ with app.app_context():
 def index():
     # Add Entry
     if request.method == 'POST':
-        name = request.form['name'].strip()
-        address = request.form['address'].strip()
+        name = request.form['name']
+        address = request.form['address']
 
         if not name or not address:
             return "ERROR: Name and Address required!"
@@ -82,7 +82,6 @@ def search():
 
     # Return only table rows HTML
     return render_template('search.html', people=people)
-
 
 
 
