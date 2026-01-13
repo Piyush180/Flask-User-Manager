@@ -1,11 +1,20 @@
-{% for person in people %}
+{% if people|length == 0 %}
 <tr>
-    <td>{{ person.name }}</td>
-    <td>{{ person.address }}</td>
-    <td>{{ person.date_added.date() }}</td>
-    <td>
-        <a href="/delete/{{person.id}}"><button>Delete</button></a>
-        <a href="/update/{{person.id}}"><button>Update</button></a>
+    <td colspan="4" style="text-align:center; color:#888;">
+        No user found
     </td>
 </tr>
-{% endfor %}
+
+{% else %}
+    {% for person in people %}
+    <tr>
+        <td>{{ person.name }}</td>
+        <td>{{ person.address }}</td>
+        <td>{{ person.date_added.date() }}</td>
+        <td>
+            <a href="/delete/{{ person.id }}"><button>Delete</button></a>
+            <a href="/update/{{ person.id }}"><button>Update</button></a>
+        </td>
+    </tr>
+    {% endfor %}
+{% endif %}
